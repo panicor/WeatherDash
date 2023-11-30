@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"></script>
+  <script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"
+></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+  <link rel="stylesheet" href="./css/style.css" />
+  <title>Weather Dashboard</title>
+</head>
+
+<body>
+  <header class="container-fluid text-center p-1 header-height bg-blue text-light">
+    <h1 class="title">Weather Dashboard</h1>
+  </header>
+
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-lg-2">
+            <h3 class="mt-2">
+                Search for a city:
+            </h3>
+            <div class="form">
+                <input placeholder="Tampa..." type="text" id="search-val" />
+                <button class="btn" id= "search-btn">
+                    <i class= "fas fa-search"></i>
+                </button>
+            </div>
+            <aside class="citiesBtn">
+
+            </aside>
+        </aside>
+        <div class = "containerContainer">
+            <div class = "container">
+        <div class = "show" >
+            <div class = "headerContainer">
+            <div class = "searchValueHeader"></div>
+            <div class = "date"></div>    
+             <div class = iconPic>
+            <img class = "icon"></img>
+            </div>
+            </div>
+       
+            <ul class = "list p-3">
+                <li class="list1"></li>
+                <li class="list2"></li>
+                <li class="list3"></li>
+             <div class = "uvi">
+                <li class="list4"></li>
+            </div>
+            </ul>
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+
+<div class="headerHeader"> </div>
+<div class = "dayContainer">
+<div class="dayOne day">
+    <div class="day1Header dayHeader"></div>
+    <div class="day1Temp dayTemp"></div>
+    <div class="day1Wind dayWind"></div>
+    <div class="day1Hum dayHim"></div>
+</div>
+
+<div class="dayTwo day">
+    <div class="day2Header dayHeader"></div>
+    <div class="day2Temp"></div>
+    <div class="day2Wind"></div>
+    <div class="day2Hum"></div>
+</div>
+<div class="dayThree day">
+    <div class="day3Header dayHeader"></div>
+    <div class="day3Temp dayTemp"></div>
+    <div class="day3Wind dayWind"></div>
+    <div class="day3Hum dayHum"></div>
+</div>
+<div class="dayFour day">
+    <div class="day4Header dayHeader"></div>
+    <div class="day4"></div>
+    <div class="day44"></div>
+    <div class="day444"></div>
+</div>
+<div class="dayFive day">
+    <div class="day5Header dayHeader"></div>
+    <div class="day5"></div>
+    <div class="day55"></div>
+    <div class="day555"></div>
+</div>
+</div>
+
+
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
