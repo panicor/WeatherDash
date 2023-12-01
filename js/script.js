@@ -1,6 +1,5 @@
-require('dotenv').config();
+import { API_KEY } from '../config.js';
 
-const apiKey = process.env.API_KEY;
 //hooks into html
 var searchBtn = document.querySelector("#search-btn");
 var citiesList = document.querySelector(".citiesBtn");
@@ -61,7 +60,7 @@ function searchVal (){
 //uses search term to get weather
 function getCurrentWeather (searchValue){
     //dynamic url using search input and api key
-    var queryUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchValue + "&appid=" + apiKey;
+    var queryUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchValue + "&appid=" + API_KEY;
 
     //fetches from url
     fetch(queryUrl)
@@ -86,7 +85,7 @@ function getCurrentWeather (searchValue){
 //uses lat and lon to get city from coords
 function getCoords (lat, lon, searchValue){
     //dynamic url
-        coordsUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude={part}&appid=" + apiKey;
+        let coordsUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude={part}&appid=" + API_KEY;
         
         //fetches data from url
             fetch(coordsUrl)
