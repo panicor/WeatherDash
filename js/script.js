@@ -1,23 +1,24 @@
+//uses the concealed API key in config.js
 import { API_KEY } from "../config.js";
 
+//initializes empty object for DOM elements
 let els = {};
 
-for (let i = 1; i <= 5; i++) {
+//creates keys and values dynamically based on the number assigned to each day  
+for (let i = 0; i <= 5; i++) {
     els[`day${i}Header`] = document.querySelector(`.day${i}Header`);
+    els[`day${i}Icon`] = document.querySelector(`.day${i}Icon`);
     els[`day${i}Temp`] = document.querySelector(`.day${i}Temp`);
     els[`day${i}Wind`] = document.querySelector(`.day${i}Wind`);
     els[`day${i}Hum`] = document.querySelector(`.day${i}Hum`);
+    els[`day${i}UVI`] = document.querySelector(`.day${i}UVI`);
 }
 
+//selects HTML DOM elements
 var searchBtn = document.querySelector("#search-btn");
 var citiesList = document.querySelector(".citiesBtn");
 var showSection = document.querySelector(".show");
-var todayTemp = document.querySelector(".todayTemp");
-var todayWind = document.querySelector(".todayWind");
-var todayHum = document.querySelector(".todayHum");
-var todayUVI = document.querySelector(".todayUVI");
 var searchValueHeader = document.querySelector(".searchValueHeader");
-var date = document.querySelector(".date");
 var dayContainer = document.querySelector(".dayContainer");
 var headerHeader = document.querySelector(".headerHeader");
 var icons = document.querySelector(".icon");
@@ -41,7 +42,7 @@ function searchVal() {
 
 //uses search term to get weather
 function getCurrentWeather(searchValue) {
-  //dynamic url using search input and api key
+  //dynamic url using search input and API key
   var queryUrl =
     "https://api.openweathermap.org/data/2.5/weather?q=" +
     searchValue +
@@ -55,7 +56,7 @@ function getCurrentWeather(searchValue) {
       return res.json();
     })
     .then(function (data) {
-      //grabs lattitude and longitude from data and sets to variable
+      //grabs lattitude and longitude from data and sets to variables
       var lat = data.coord.lat;
       var lon = data.coord.lon;
       //uses lat and long variables to get coordinates of city
@@ -68,10 +69,12 @@ function getCurrentWeather(searchValue) {
     });
 }
 
+//forumla for converting temperatures in Kelvin to Fahrenheit
 function KelvinToFahrenheit(K) {
   return ((K - 273.15) * (9 / 5) + 32).toFixed(1);
 }
 
+//fatches 5 day forcast data based on the number assigned to the day
 function getDayData(data, dayNumber) {
   const dayData = data.daily[dayNumber];
   return {
@@ -79,25 +82,39 @@ function getDayData(data, dayNumber) {
     temp: JSON.parse(dayData.temp.day),
     wind: JSON.parse(dayData.wind_speed),
     hum: JSON.parse(dayData.humidity),
+    uvi : JSON.parse(dayData.uvi)
   };
 }
 
+//formats the 5 day forcast data 
 function formatDivs(data, dayNum) {
   let newData = getDayData(data, dayNum);
-  console.log(newData);
   els[`day${dayNum}Header`].innerHTML = newData.date;
-  els[`day${dayNum}Temp`].innerHTML = "Temperature: " + KelvinToFahrenheit(newData.temp) + "°";
+  els[`day${dayNum}Temp`].innerHTML = "Temperature: " + parseInt(KelvinToFahrenheit(newData.temp)) + "°";
   els[`day${dayNum}Wind`].innerHTML = "Wind: " + newData.wind + " MPH";
   els[`day${dayNum}Hum`].innerHTML = "Humidity: " + newData.hum + " %";
+  els[`day${dayNum}UVI`].innerHTML = "UV Index: " + newData.uvi;
+
+      //sets styles on UV index based on its value
+      if (newData.uvi <= 2.5) {
+        els[`day${dayNum}UVI`].classList.add("green");
+      } else if (newData.uvi > 2.5 && newData.uvi <= 5.5) {
+        els[`day${dayNum}UVI`].classList.add("yellow");
+      } else if (newData.uvi > 5.5 && newData.uvi <= 7.5) {
+        els[`day${dayNum}UVI`].classList.add("orange");
+      } else {
+        els[`day${dayNum}UVI`].classList.add("red");
+      }
 }
 
+//returns input string with only first letter capitalized
 function toProperCase(str){
     return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
 }
 
-//uses lat and lon to get city from coords
-function getCoords(lat, lon, searchValue) {
-  //dynamic url
+//uses latitude and longitude to get city from coordinates
+function getCoords(lat, lon) {
+  //dynamic url using latitude, longitude, and API key
   let coordsUrl =
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
     lat +
@@ -106,7 +123,7 @@ function getCoords(lat, lon, searchValue) {
     "&exclude={part}&appid=" +
     API_KEY;
 
-  //fetches data from url
+  //fetches data from dynamic url
   fetch(coordsUrl)
     .then(function (res) {
       //returns data in json format
@@ -118,48 +135,26 @@ function getCoords(lat, lon, searchValue) {
         alert("Location not found");
         //if location is found, do this
       } else {
+
         //adds borders to containers
         dayContainer.classList.add("borders");
         showSection.classList.add("borders");
+
         // 5 day forecast
         headerHeader.innerHTML = "5 Day Forecast: ";
         
-        for (let i = 1; i <= 5; i++) {
+        //iterates over days and displays weather
+        for (let i = 0; i <= 5; i++) {
           formatDivs(data, i);
         }
 
-        //gets weather from api and sets to variables
-        var temp = KelvinToFahrenheit(JSON.parse(data.current.temp));
-        var wind = JSON.parse(data.current.wind_speed);
-        var hum = JSON.parse(data.current.humidity);
-        var uvi = JSON.parse(data.current.uvi);
-        //appends to page
-
-        //adds search val and date to page
-        searchValueHeader.innerHTML = toProperCase(searchValue);
-        date.innerHTML = moment().format("MM/DD/YY");
-        //adds weather and icon data to page
+        //sets the weather icon in today's weather
         icons.setAttribute(
           "src",
           "http://openweathermap.org/img/w/" +
             data.current.weather[0].icon +
             ".png"
         );
-        todayTemp.innerHTML = "Temperature: " + temp + "°";
-        todayWind.innerHTML = "Wind: " + wind + " MPH";
-        todayHum.innerHTML = "Humidity: " + hum + " %";
-        todayUVI.innerHTML = "UV Index: " + uvi;
-
-        //sets colors to uv background and changes text color
-        if (uvi <= 2.5) {
-          todayUVI.classList.add("green");
-        } else if (uvi > 2.5 && uvi <= 5.5) {
-          todayUVI.classList.add("yellow");
-        } else if (uvi > 5.5 && uvi <= 7.5) {
-          todayUVI.classList.add("orange");
-        } else {
-          todayUVI.classList.add("red");
-        }
       }
     })
     //catches errors
@@ -169,9 +164,9 @@ function getCoords(lat, lon, searchValue) {
 }
 
 function saveSearchVal(searchValue) {
-  //pushes search value to cities array
+  //pushes search value in proper casing to cities array
   cities.push(toProperCase(searchValue));
-  //saves to local storage
+  //saves cities to local storage
   localStorage.setItem("cities", cities);
 }
 
@@ -179,8 +174,8 @@ function saveSearchVal(searchValue) {
 function createCityButton(name) {
   var newButton = document.createElement("button");
   //value and html set to input name
-  newButton.value = name;
-  newButton.innerHTML = name;
+  newButton.value = toProperCase(name);
+  newButton.innerHTML = toProperCase(name);
   //event listener to history buttons
   newButton.addEventListener("click", function (event) {
     var cityName = event.target.value;
