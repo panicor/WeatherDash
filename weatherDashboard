@@ -1,3 +1,0 @@
-let API_KEY = "b8e22ed830ec486c66d2214fabd24fbd";
-
-export { API_KEY };

@@ -1,5 +1,5 @@
 //uses the concealed API key in config.js
-import { API_KEY } from "../config.js";
+const API_KEY = process.env.API_KEY;
 
 //initializes empty object for DOM elements
 let els = {};
