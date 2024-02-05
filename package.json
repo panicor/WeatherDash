@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "start": "nnode script.js",
+    "build": "npm run build"
+  },
   "dependencies": {
     "dotenv": "^16.4.1"
   }

@@ -1,5 +1,4 @@
-//uses the concealed API key in config.js
-const API_KEY = process.env.API_KEY;
+const API_KEY = "b8e22ed830ec486c66d2214fabd24fbd";
 
 //initializes empty object for DOM elements
 let els = {};
